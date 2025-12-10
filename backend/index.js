@@ -1,21 +1,28 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
+const express = require("express");
+const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 
-const PORT = 3003;
-app.use(cors({ origin: 'http://localhost:2006' }));
-app.use(express.json());//parse JSON body
-app.use(express.urlencoded({ extended: true }));//parse form data
+const app = express();
 
-const userRoutes = require('./connect.js');
-app.use('/', userRoutes);
+// ✅ Allow Vercel frontend or localhost
+app.use(
+    cors({
+        origin: "*",
+    })
+);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Import your routes
+const userRoutes = require("./connect.js");
+app.use("/", userRoutes);
 
 // SIMPLE PASSWORD
 const ADMIN_PASSWORD = "secret67";
 
-// Serve admin HTML page
+// Serve admin HTML
 app.get("/admin", (req, res) => {
     const pass = req.query.pass;
 
@@ -26,7 +33,7 @@ app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-// Serve JSON table data
+// Serve JSON data
 app.get("/admin/data", (req, res) => {
     const pass = req.query.pass;
 
@@ -36,15 +43,13 @@ app.get("/admin/data", (req, res) => {
 
     const filePath = path.join(__dirname, "data.json");
 
-    // JSON file exists?
     if (!fs.existsSync(filePath)) {
-        return res.json([]); // send empty array if file missing
+        return res.json([]);
     }
 
     const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
     res.json(data);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// ✅ IMPORTANT: export app instead of listen
+module.exports = app;
