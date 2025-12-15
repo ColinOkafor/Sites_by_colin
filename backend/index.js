@@ -9,6 +9,8 @@ const app = express();
 app.use(
     cors({
         origin: "*",
+        methods: ["GET", "POST", "OPTIONS"],
+
     })
 );
 
@@ -17,7 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Import your routes
 const userRoutes = require("./connect.js");
-app.use("/api", userRoutes);
+app.options("*", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.status(200).end();
+});
+
+app.use("/", userRoutes);
 
 // SIMPLE PASSWORD
 const ADMIN_PASSWORD = "secret67";
