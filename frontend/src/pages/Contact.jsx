@@ -10,7 +10,7 @@ function Contact() {
         const data = { name, email, message };
 
         try {
-            const res = await fetch("http://localhost:3003/frontend/contact/userInfo",
+            const res = await fetch(`${import.meta.env.BACKEND_URL}/frontend/contact/userInfo`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
