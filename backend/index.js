@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Import your routes
 const userRoutes = require("./connect.js");
-app.use("/", userRoutes);
+app.use("/api", userRoutes);
 
 // SIMPLE PASSWORD
 const ADMIN_PASSWORD = "secret67";
