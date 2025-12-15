@@ -23,5 +23,6 @@ router.post("/frontend/contact/userInfo", (req, res) => {
     }
     res.json({ message: "Form submitted and saved!" });
 });
+router.get("/ping", (req, res) => res.send("pong"));
 
 module.exports = router;
