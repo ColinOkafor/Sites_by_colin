@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const router = express.Router();
 
-router.post("/frontend/contact/userInfo", (req, res) => {
+router.post("api/frontend/contact/userInfo", (req, res) => {
     const { name, email, message } = req.body; //<-- get data from form
 
     const userData = { name, email, message, date: new Date().toISOString() };
